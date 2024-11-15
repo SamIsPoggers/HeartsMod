@@ -12,6 +12,10 @@ import java.util.UUID;
 
 public class PlayerEventHandler {
 
+    // Get the player's profile and the server's ban list
+    GameProfile playerProfile = player.getGameProfile();
+    GameProfileBanList banList = server.getPlayerList().getBans();
+
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
@@ -41,6 +45,11 @@ public class PlayerEventHandler {
             Config.PLAYER_LIVES.put(playerUUID, 0);
             if (isMultiplayerServer()) {
                 player.connection.disconnect(Component.literal("You have been banned for losing all lives."));
+
+                // Create a new ban entry and add it to the ban list
+                GameProfileBanEntry banEntry = new GameProfileBanEntry(playerProfile, null, "Server", null, "You have been banned for losing all lives.");
+                banList.add(banEntry);
+
             } else {
                 player.setGameMode(GameType.SPECTATOR);
             }
