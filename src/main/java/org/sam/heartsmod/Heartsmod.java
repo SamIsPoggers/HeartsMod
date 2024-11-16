@@ -3,6 +3,7 @@ package org.sam.heartsmod;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,6 +44,14 @@ public class Heartsmod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             LOGGER.info("Client setup complete");
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = MODID)
+    public class ModEventHandlers {
+        @SubscribeEvent
+        public static void onRegisterCommands(RegisterCommandsEvent event) {
+            LifeCommand.register(event.getDispatcher());
         }
     }
 }
